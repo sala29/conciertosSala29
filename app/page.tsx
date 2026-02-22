@@ -1,65 +1,91 @@
-import Image from "next/image";
+import Link from 'next/link'
+import { supabase } from '@/lib/supabase'
 
-export default function Home() {
+export default async function Home() {
+  const { data: events } = await supabase
+    .from('events')
+    .select('*')
+    .order('date', { ascending: true })
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+    <main>
+      <header className="header">
+        <span className="header-logo">🎵 SALA 29</span>
+        <nav className="header-nav">
+          <Link href="/admin/login" className="btn btn-secondary btn-sm">Admin</Link>
+        </nav>
+      </header>
+
+      {/* HERO */}
+      <div className="home-hero fade-in">
+        <h1>PRÓXIMOS CONCIERTOS</h1>
+        <p>Consulta la agenda y apúntate a la lista</p>
+
+        {/* BANNER REGISTRO */}
+        <div className="register-banner">
+          <div className="register-banner-icon">🎫</div>
+          <div className="register-banner-text">
+            <strong>¿Quieres acceder a Sala 29?</strong>
+            <span>Para poder asistir a nuestros eventos deberás estar registrado como socio de acceso.</span>
+          </div>
+          
+            <a href="https://accesossala29-front.onrender.com/usuarios/usuarios.html"
             target="_blank"
             rel="noopener noreferrer"
+            className="btn btn-primary register-banner-btn"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
+            Registrarse
           </a>
         </div>
-      </main>
-    </div>
-  );
+      </div>
+
+      {/* GRID DE EVENTOS */}
+      <div className="events-grid fade-in">
+        {events && events.length > 0 ? (
+          events.map((event) => (
+            <Link href={`/eventos/${event.id}`} key={event.id} className="event-card">
+              {event.photo_url
+                ? <img src={event.photo_url} alt={event.title} className="event-card-img" />
+                : <div className="event-card-no-img">🎸</div>
+              }
+              <div className="event-card-body">
+                <div className="event-card-title">{event.title}</div>
+                <div className="event-card-date">
+                  📅 {new Date(event.date).toLocaleDateString('es-ES', {
+                    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+                  })}
+                </div>
+                <div className="event-card-desc">{event.description}</div>
+                <div className="event-card-price">
+                  {event.price === 0 ? 'Entrada gratuita' : `${event.price} €`}
+                </div>
+              </div>
+            </Link>
+          ))
+        ) : (
+          <div className="empty-state">No hay eventos próximos por ahora.</div>
+        )}
+      </div>
+
+      {/* BANNER REGISTRO INFERIOR */}
+      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 24px 60px' }}>
+        <div className="register-banner register-banner-bottom">
+          <div className="register-banner-icon">🎫</div>
+          <div className="register-banner-text">
+            <strong>¿Aún no eres socio?</strong>
+            <span>Regístrate ahora y accede a todos nuestros eventos en Sala 29.</span>
+          </div>
+          
+            <a href="https://accesossala29-front.onrender.com/usuarios/usuarios.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary register-banner-btn"
+          >
+            Registrarse
+          </a>
+        </div>
+      </div>
+
+    </main>
+  )
 }
