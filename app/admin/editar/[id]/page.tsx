@@ -48,6 +48,7 @@ export default function AdminEditar() {
       setMensaje({ texto: 'Error al guardar.', tipo: 'error' })
     } else {
       setMensaje({ texto: '✅ Evento actualizado correctamente.', tipo: 'ok' })
+      router.push('/admin')
     }
     setLoading(false)
   }

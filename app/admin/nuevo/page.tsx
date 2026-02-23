@@ -38,6 +38,7 @@ export default function AdminNuevo() {
     } else {
       setMensaje({ texto: '✅ Evento creado correctamente.', tipo: 'ok' })
       setForm({ title: '', date: '', description: '', price: '', photo_url: '' })
+      router.push('/admin')
     }
     setLoading(false)
   }
