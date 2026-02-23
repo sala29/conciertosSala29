@@ -18,7 +18,7 @@ export default async function Home() {
 
       {/* HERO */}
       <div className="home-hero fade-in">
-        <h1>PRÓXIMOS CONCIERTOS</h1>
+        <h1>PRÓXIMAS FREE SESIONS</h1>
         <p>Consulta la agenda y apúntate a la lista</p>
 
         {/* BANNER REGISTRO */}
