@@ -1,13 +1,22 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 
-export const revalidate = 0
-export const dynamic = 'force-dynamic'
-export default async function Home() {
-  const { data: events } = await supabase
-    .from('events')
-    .select('*')
-    .order('date', { ascending: true })
+export default function Home() {
+  const [events, setEvents] = useState<any[]>([])
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      const { data } = await supabase
+        .from('events')
+        .select('*')
+        .order('date', { ascending: true })
+      setEvents(data || [])
+    }
+    fetchEvents()
+  }, [])
 
   return (
     <main>
@@ -18,32 +27,24 @@ export default async function Home() {
         </nav>
       </header>
 
-      {/* HERO */}
       <div className="home-hero fade-in">
-        <h1>PRÓXIMAS FREE SESIONS</h1>
+        <h1>PRÓXIMOS CONCIERTOS</h1>
         <p>Consulta la agenda y apúntate a la lista</p>
 
-        {/* BANNER REGISTRO */}
         <div className="register-banner">
           <div className="register-banner-icon">🎫</div>
           <div className="register-banner-text">
             <strong>¿Quieres acceder a Sala 29?</strong>
             <span>Para poder asistir a nuestros eventos deberás estar registrado como socio de acceso.</span>
           </div>
-          
-            <a href="https://accesossala29-front.onrender.com/usuarios/usuarios.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-primary register-banner-btn"
-          >
+          <a href="https://accesossala29-front.onrender.com/usuarios/usuarios.html" target="_blank" rel="noopener noreferrer" className="btn btn-primary register-banner-btn">
             Registrarse
           </a>
         </div>
       </div>
 
-      {/* GRID DE EVENTOS */}
       <div className="events-grid fade-in">
-        {events && events.length > 0 ? (
+        {events.length > 0 ? (
           events.map((event) => (
             <Link href={`/eventos/${event.id}`} key={event.id} className="event-card">
               {event.photo_url
@@ -69,7 +70,6 @@ export default async function Home() {
         )}
       </div>
 
-      {/* BANNER REGISTRO INFERIOR */}
       <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 24px 60px' }}>
         <div className="register-banner register-banner-bottom">
           <div className="register-banner-icon">🎫</div>
@@ -77,17 +77,11 @@ export default async function Home() {
             <strong>¿Aún no eres socio?</strong>
             <span>Regístrate ahora y accede a todos nuestros eventos en Sala 29.</span>
           </div>
-          
-            <a href="https://accesossala29-front.onrender.com/usuarios/usuarios.html"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-primary register-banner-btn"
-          >
+          <a href="https://accesossala29-front.onrender.com/usuarios/usuarios.html" target="_blank" rel="noopener noreferrer" className="btn btn-primary register-banner-btn">
             Registrarse
           </a>
         </div>
       </div>
-
     </main>
   )
 }
