@@ -18,6 +18,10 @@ export default function AdminDashboard() {
       fetchEvents()
     }
     init()
+
+
+    window.addEventListener('focus', fetchEvents)
+    return () => window.removeEventListener('focus', fetchEvents)
   }, [])
 
   const fetchEvents = async () => {
