@@ -77,7 +77,7 @@ export default function EventoDetalle() {
           })}
         </p>
         <p className="detail-price">
-          {event.price === 0 ? 'Entrada gratuita' : `${event.price} €`}
+          {event.price === 0 ? 'Entrada gratuita' : `Donación ${event.price} €`}
         </p>
         <p className="detail-desc">{event.description}</p>
 

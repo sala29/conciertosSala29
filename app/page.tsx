@@ -60,7 +60,7 @@ export default function Home() {
                 </div>
                 <div className="event-card-desc">{event.description}</div>
                 <div className="event-card-price">
-                  {event.price === 0 ? 'Entrada gratuita' : `${event.price} €`}
+                  {event.price === 0 ? 'Entrada gratuita' : `Donación ${event.price} €`}
                 </div>
               </div>
             </Link>
