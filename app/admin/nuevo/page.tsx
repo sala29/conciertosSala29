@@ -30,7 +30,7 @@ export default function AdminNuevo() {
     setLoading(true)
     setMensaje(null)
     const { error } = await supabase.from('events').insert({
-      title: form.title, date: form.date, description: form.description,
+      title: form.title, date: new Date(form.date).toISOString(), description: form.description,
       price: parseFloat(form.price) || 0, photo_url: form.photo_url || null,
     })
     if (error) {
