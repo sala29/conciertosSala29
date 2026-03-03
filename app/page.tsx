@@ -15,7 +15,15 @@ export default function Home() {
         .order('date', { ascending: true })
       setEvents(data || [])
     }
+
     fetchEvents()
+
+    // Recargar datos al volver a la pestaña
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') fetchEvents()
+    }
+    document.addEventListener('visibilitychange', handleVisibility)
+    return () => document.removeEventListener('visibilitychange', handleVisibility)
   }, [])
 
   return (

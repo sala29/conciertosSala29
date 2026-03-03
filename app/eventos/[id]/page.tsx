@@ -17,7 +17,14 @@ export default function EventoDetalle() {
       const { data } = await supabase.from('events').select('*').eq('id', id).single()
       setEvent(data)
     }
+
     fetchEvent()
+
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') fetchEvent()
+    }
+    document.addEventListener('visibilitychange', handleVisibility)
+    return () => document.removeEventListener('visibilitychange', handleVisibility)
   }, [id])
 
   const handleSignup = async (e: React.FormEvent) => {
