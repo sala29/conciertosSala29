@@ -63,8 +63,10 @@ export default function Home() {
                 <div className="event-card-title">{event.title}</div>
                 <div className="event-card-date">
                   📅 {new Date(event.date).toLocaleDateString('es-ES', {
-                    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-                  })}
+                      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+                      hour: '2-digit', minute: '2-digit',
+                      timeZone: 'Europe/Madrid'
+                    })}
                 </div>
                 <div className="event-card-desc">{event.description}</div>
                 <div className="event-card-price">
